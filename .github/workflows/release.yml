@@ -32,6 +32,7 @@ jobs:
         # MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
     - name: Build Changelog
+      id: build_changelog
       uses: mikepenz/release-changelog-builder-action@v5
       with:
         mode: COMMIT
@@ -64,4 +65,5 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
-        body_path: ${{steps.github_release.outputs.changelog}}
+        name: v${{ github.ref_name }}
+        body_path: ${{steps.build_changelog.outputs.changelog}}
