@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-    - '*.*.*'
+    - '[0-9]+.[0-9].[0-9]'
 
 jobs:
   release:
@@ -31,7 +31,37 @@ jobs:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
         # MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-    - name: List local repository contents
-      run: ls -R ${{ github.workspace }}/local-repo
+    - name: Build Changelog
+      uses: mikepenz/release-changelog-builder-action@v5
+      with:
+        mode: COMMIT
+        configurationJson: |
+          {
+            "template": "\# What's changed\n#{{CHANGELOG}}",
+            "categories": [
+              {
+                  "title": "## Feature",
+                  "labels": ["feat", "feature"]
+              },
+              {
+                  "title": "## Fix",
+                  "labels": ["fix", "bug"]
+              },
+              {
+                  "title": "## Other",
+                  "labels": []
+              }
+            ],
+            "label_extractor": [
+              {
+                "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                "target": "$1"
+              }
+            ]
+          }
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Release
       uses: softprops/action-gh-release@v2
+      with:
+        body_path: ${{steps.github_release.outputs.changelog}}
