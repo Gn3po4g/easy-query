@@ -24,10 +24,8 @@ jobs:
         gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
     - name: Import GPG key
       run: |
-        echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+        echo "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | gpg --batch --import
         gpg --list-secret-keys --keyid-format LONG
-      env:
-        GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
     - name: Publish to Maven
       run: mvn -e -X deploy -DaltDeploymentRepository=local::default::file://${{ github.workspace }}/local-repo
       # run: mvn -B deploy
