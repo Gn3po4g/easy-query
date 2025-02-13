@@ -25,7 +25,7 @@ jobs:
     - name: Publish to Maven
       run: |
         gpg --list-secret-keys --keyid-format LONG
-        mvn -e -X deploy -DaltDeploymentRepository=local::default::file://${{ github.workspace }}/local-repo
+        mvn deploy -DaltDeploymentRepository=local::default::file://${{ github.workspace }}/local-repo
       # run: mvn -B deploy
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
