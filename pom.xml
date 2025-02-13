@@ -57,10 +57,14 @@
     </properties>
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Gn3po4g/easy-query</url>
+            <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
     <build>
         <plugins>
