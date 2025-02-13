@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches:
+    - test-workflow
+    tags:
+    - "*.*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '21'
+    - name: Publish to Maven
+      run: mvn deploy -DaltDeploymentRepository=local::default::file://${{ github.workspace }}/local-repo
+      # run: mvn -B deploy
+      # env:
+      #   MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+      #   MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+    - name: List local repository contents
+      run: ls -R ${{ github.workspace }}/local-repo
+    - name: Release
+      uses: softprops/action-gh-release@v2
