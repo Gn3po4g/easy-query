@@ -127,6 +127,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <!-- Prevent gpg from using pinentry programs -->
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
             </plugin>
             <!--部署插件-->
             <!-- <plugin>
