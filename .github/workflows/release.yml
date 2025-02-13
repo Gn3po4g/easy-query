@@ -38,7 +38,7 @@ jobs:
         mode: COMMIT
         configurationJson: |
           {
-            "template": "\# What's changed\n#{{CHANGELOG}}",
+            "template": "#{{CHANGELOG}}",
             "categories": [
               {
                   "title": "## Feature",
@@ -66,4 +66,4 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         name: v${{ github.ref_name }}
-        body_path: ${{steps.build_changelog.outputs.changelog}}
+        body: ${{steps.build_changelog.outputs.changelog}}
