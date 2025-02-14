@@ -18,10 +18,13 @@ jobs:
         distribution: 'zulu'
         java-version: '8'
         cache: 'maven'
-        server-id: local
-        server-username: MAVEN_USERNAME
-        gpg-passphrase: MAVEN_GPG_PASSPHRASE
-        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+      - name: Release Maven package
+        uses: samuelmeuli/action-maven-publish@v1
+        with:
+            gpg_private_key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+            gpg_passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+            nexus_username: ${{ secrets.OSSRH_USER }}
+            nexus_password: ${{ secrets.OSSRH_PASSWORD }}
     # - name: Publish to Maven
     #   run: mvn -B deploy
     #   env:
